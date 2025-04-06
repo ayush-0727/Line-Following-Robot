@@ -1,0 +1,6 @@
+Ayush Pratap Singh (24M0767) - 33%
+Praveen Kapildev Maurya (24M0775) - 33%
+Devang Mahar (24M0824) - 33%
+
+Every aspect, including hardware setup, heptagon implementation, debugging, parameter tuning, arduino setup, testing and video shootup, was carried out collaboratively. Discussions, problem-solving, and improvements were made collectively to ensure a successful outcome. Hence, we believe that each one us contributed equally towards this project task.
+

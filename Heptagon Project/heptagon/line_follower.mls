@@ -1,0 +1,365 @@
+type st = St_PID_calculation|St_Obstacle_traversing
+node line_follower(sen : int^5; obj_det : int; ir1 : int; ir2 : int)
+returns (v_l : int; v_r : int; dir : int; pid : int; position : int;
+          calc : int; sum : int; st : int; black_line : bool)
+var sen4 : int; sen3 : int; sen2 : int; sen1 : int; sen0 : int; ir_on : int;
+    object_found : int; maxspeed : int; pnr : bool; nr : bool; r : bool;
+    ns : st; ck : st; v_l_St_PID_calculation : int;
+    v_r_St_PID_calculation : int; dir_St_PID_calculation : int;
+    pid_St_PID_calculation : int; position_St_PID_calculation : int;
+    calc_St_PID_calculation : int; sum_St_PID_calculation : int;
+    st_St_PID_calculation : int; black_line_St_PID_calculation : bool;
+    maxspeed_St_PID_calculation : int; object_found_St_PID_calculation : int;
+    ir_on_St_PID_calculation : int; sen0_St_PID_calculation : int;
+    sen1_St_PID_calculation : int; sen2_St_PID_calculation : int;
+    sen3_St_PID_calculation : int; sen4_St_PID_calculation : int;
+    ns_St_PID_calculation : st; nr_St_PID_calculation : bool;
+    v_l_St_Obstacle_traversing : int; v_r_St_Obstacle_traversing : int;
+    dir_St_Obstacle_traversing : int; pid_St_Obstacle_traversing : int;
+    position_St_Obstacle_traversing : int; calc_St_Obstacle_traversing : int;
+    sum_St_Obstacle_traversing : int; st_St_Obstacle_traversing : int;
+    black_line_St_Obstacle_traversing : bool;
+    maxspeed_St_Obstacle_traversing : int;
+    object_found_St_Obstacle_traversing : int;
+    ir_on_St_Obstacle_traversing : int; sen0_St_Obstacle_traversing : int;
+    sen1_St_Obstacle_traversing : int; sen2_St_Obstacle_traversing : int;
+    sen3_St_Obstacle_traversing : int; sen4_St_Obstacle_traversing : int;
+    ns_St_Obstacle_traversing : st; nr_St_Obstacle_traversing : bool;
+    is_line : bool; avg_ref : int; last_pos : int; p : int; d : int; i : int;
+    value : int; v_23 : bool; v_24 : int; v_25 : int; v_26 : int; v_27 : int;
+    v_28 : int; v_29 : int; v_30 : int; v_31 : int; v_32 : int; v_33 : bool;
+    v_34 : bool; v_35 : bool; v_36 : bool; v_37 : bool; v_38 : bool;
+    v_39 : int; v_40 : bool; v_41 : int; v_42 : bool; v_43 : int;
+    v_44 : bool; v_45 : bool; v_46 : int; v_47 : bool; v_48 : bool;
+    v_49 : bool; v_50 : int; v_51 : bool; v_52 : int; v_53 : bool;
+    v_54 : bool; v_55 : int; v_56 : bool; v_57 : bool; v_58 : bool;
+    v_59 : bool; v_60 : bool; v_61 : bool; v_62 : int; v_63 : int;
+    v_64 : int; v_65 : int; v_66 : int; v_67 : int; v_68 : int; v_69 : int;
+    v_70 : int; v_71 : int; v_72 : int; v_73 : int; v_74 : int; v_75 : int;
+    v_76 : int; v_77 : bool; v_78 : bool; v_79 : int; v_80 : int; v_81 : int;
+    v_82 : int; v_83 : int; v_84 : int; v_85 : int; v_86 : int; v_87 : int;
+    v_88 : int; v_89 : int; v_90 : bool; v_91 : bool; v_92 : bool;
+    v_93 : bool; v_94 : bool; v_95 : bool; v_96 : bool; v_97 : bool;
+    v_98 : bool; v_99 : bool; v_100 : bool; v_101 : int; v_102 : bool;
+    v_103 : bool; v_104 : int; v_105 : int; v_106 : bool; v_107 : int;
+    v_108 : bool; v_109 : bool; v_110 : int; v_111 : bool; v_112 : int;
+    v_113 : bool; v_114 : int; v_115 : int; v_116 : int; v_117 : int;
+    v_118 : bool; v_119 : bool; v_120 : int; v_121 : int; v_122 : int;
+    v_123 : int; v_124 : int; v_125 : int; v_126 : bool; v_127 : int;
+    v_128 : bool; v_129 : int; v_130 : int; v_131 : bool; v_132 : int;
+    v_133 : bool; v_134 : int; v_135 : int; v_136 : int; v_137 : bool;
+    v_138 : int; v_139 : int; v_140 : bool; v_141 : int; v : bool; v_1 : int;
+    v_2 : int; v_3 : int; v_4 : int; v_5 : int; v_6 : int; v_7 : int;
+    v_8 : int; v_9 : int; v_10 : int; v_11 : int; v_12 : int; v_13 : int;
+    v_14 : int; v_15 : int; v_16 : int; v_17 : int; v_18 : int; v_19 : bool;
+    v_20 : int; v_21 : bool; v_22 : int;
+let
+  r = pnr;
+  pnr = false fby nr;
+  ck = St_PID_calculation fby ns;
+  dir_St_PID_calculation = if v_137 then 2 else v_141;
+  v_141 = if v_140 then 3 else 1;
+  v_140 = (v_139 = 3000);
+  v_139 = (v_138 + (sen4 when St_PID_calculation(ck)));
+  v_138 =
+    ((sen2 when St_PID_calculation(ck)) + (sen3 when St_PID_calculation(ck)));
+  v_137 = (v_136 = 3000);
+  v_136 = (v_135 + (sen2 when St_PID_calculation(ck)));
+  v_135 =
+    ((sen0 when St_PID_calculation(ck)) + (sen1 when St_PID_calculation(ck)));
+  v_r_St_PID_calculation =
+    if v_133 then (maxspeed when St_PID_calculation(ck)) else v_134;
+  v_134 =
+    ((maxspeed when St_PID_calculation(ck)) -
+     (pid when St_PID_calculation(ck)));
+  v_133 = ((pid when St_PID_calculation(ck)) < 0);
+  v_l_St_PID_calculation =
+    if v_131 then v_132 else (maxspeed when St_PID_calculation(ck));
+  v_132 =
+    ((maxspeed when St_PID_calculation(ck)) +
+     (pid when St_PID_calculation(ck)));
+  v_131 = ((pid when St_PID_calculation(ck)) < 0);
+  pid_St_PID_calculation =
+    if v_126 then (maxspeed when St_PID_calculation(ck)) else v_130;
+  v_130 = if v_128 then v_129 else (calc when St_PID_calculation(ck));
+  v_129 = ~-((maxspeed when St_PID_calculation(ck)));
+  v_128 = ((calc when St_PID_calculation(ck)) < v_127);
+  v_127 = ~-((maxspeed when St_PID_calculation(ck)));
+  v_126 =
+    ((calc when St_PID_calculation(ck)) >
+     (maxspeed when St_PID_calculation(ck)));
+  calc_St_PID_calculation = (v_124 + v_125);
+  v_125 = (d * 5);
+  v_124 = (v_122 + v_123);
+  v_123 = (i / 25000);
+  v_122 = (p / 25);
+  d = (p - v_121);
+  v_121 = if v_119 then 0 else v_120;
+  v_120 = pre p;
+  v_119 = if v_118 then true else (r when St_PID_calculation(ck));
+  v_118 = true fby false;
+  i = if v_109 then 0 else v_117;
+  v_117 = if v_111 then 200000 else v_116;
+  v_116 = if v_113 then ~-(200000) else v_115;
+  v_115 = (v_114 + p);
+  v_114 = pre i;
+  v_113 = (v_112 < ~-(200000));
+  v_112 = pre i;
+  v_111 = (v_110 > 200000);
+  v_110 = pre i;
+  v_109 = if v_108 then true else (r when St_PID_calculation(ck));
+  v_108 = true fby false;
+  p = ((position when St_PID_calculation(ck)) - 2000);
+  position_St_PID_calculation = if is_line then v_105 else v_107;
+  v_107 = if v_106 then 0 else 4000;
+  v_106 = (last_pos < 0);
+  v_105 = if v_103 then v_104 else 0;
+  v_104 = (value / (sum when St_PID_calculation(ck)));
+  v_103 = not(v_102);
+  v_102 = ((sum when St_PID_calculation(ck)) = 0);
+  last_pos = if v_100 then 0 else v_101;
+  v_101 = pre (position when St_PID_calculation(ck));
+  v_100 = if v_99 then true else (r when St_PID_calculation(ck));
+  v_99 = true fby false;
+  is_line = if v_98 then true else false;
+  v_98 = (v_96 or v_97);
+  v_97 = ((sen4 when St_PID_calculation(ck)) > 400);
+  v_96 = (v_94 or v_95);
+  v_95 = ((sen3 when St_PID_calculation(ck)) > 400);
+  v_94 = (v_92 or v_93);
+  v_93 = ((sen2 when St_PID_calculation(ck)) > 400);
+  v_92 = (v_90 or v_91);
+  v_91 = ((sen1 when St_PID_calculation(ck)) > 400);
+  v_90 = ((sen0 when St_PID_calculation(ck)) > 400);
+  sum_St_PID_calculation = (v_89 + (sen4 when St_PID_calculation(ck)));
+  v_89 = (v_88 + (sen3 when St_PID_calculation(ck)));
+  v_88 = (v_87 + (sen2 when St_PID_calculation(ck)));
+  v_87 =
+    ((sen0 when St_PID_calculation(ck)) + (sen1 when St_PID_calculation(ck)));
+  value = (v_85 + v_86);
+  v_86 = (4000 * (sen4 when St_PID_calculation(ck)));
+  v_85 = (v_83 + v_84);
+  v_84 = (3000 * (sen3 when St_PID_calculation(ck)));
+  v_83 = (v_81 + v_82);
+  v_82 = (2000 * (sen2 when St_PID_calculation(ck)));
+  v_81 = (v_79 + v_80);
+  v_80 = (1000 * (sen1 when St_PID_calculation(ck)));
+  v_79 = (0 * (sen0 when St_PID_calculation(ck)));
+  object_found_St_PID_calculation =
+    if v_78 then 0 else (obj_det when St_PID_calculation(ck));
+  v_78 = if v_77 then true else (r when St_PID_calculation(ck));
+  v_77 = true fby false;
+  ir_on_St_PID_calculation = (ir1 when St_PID_calculation(ck));
+  sen4_St_PID_calculation =
+    if (black_line when St_PID_calculation(ck)) then v_75 else v_76;
+  v_76 = (sen when St_PID_calculation(ck))[4];
+  v_75 = (1000 - v_74);
+  v_74 = (sen when St_PID_calculation(ck))[4];
+  sen3_St_PID_calculation =
+    if (black_line when St_PID_calculation(ck)) then v_72 else v_73;
+  v_73 = (sen when St_PID_calculation(ck))[3];
+  v_72 = (1000 - v_71);
+  v_71 = (sen when St_PID_calculation(ck))[3];
+  sen2_St_PID_calculation =
+    if (black_line when St_PID_calculation(ck)) then v_69 else v_70;
+  v_70 = (sen when St_PID_calculation(ck))[2];
+  v_69 = (1000 - v_68);
+  v_68 = (sen when St_PID_calculation(ck))[2];
+  sen1_St_PID_calculation =
+    if (black_line when St_PID_calculation(ck)) then v_66 else v_67;
+  v_67 = (sen when St_PID_calculation(ck))[1];
+  v_66 = (1000 - v_65);
+  v_65 = (sen when St_PID_calculation(ck))[1];
+  sen0_St_PID_calculation =
+    if (black_line when St_PID_calculation(ck)) then v_63 else v_64;
+  v_64 = (sen when St_PID_calculation(ck))[0];
+  v_63 = (1000 - v_62);
+  v_62 = (sen when St_PID_calculation(ck))[0];
+  black_line_St_PID_calculation = if v_34 then false else v_61;
+  v_61 = if v_59 then true else v_60;
+  v_60 = pre (black_line when St_PID_calculation(ck));
+  v_59 = (v_38 & v_58);
+  v_58 = (v_49 or v_57);
+  v_57 = (v_54 & v_56);
+  v_56 = (v_55 = 1000);
+  v_55 = (sen when St_PID_calculation(ck))[4];
+  v_54 = (v_51 & v_53);
+  v_53 = (v_52 = 0);
+  v_52 = (sen when St_PID_calculation(ck))[3];
+  v_51 = (v_50 = 1000);
+  v_50 = (sen when St_PID_calculation(ck))[2];
+  v_49 = (v_40 or v_48);
+  v_48 = (v_45 & v_47);
+  v_47 = (v_46 = 1000);
+  v_46 = (sen when St_PID_calculation(ck))[2];
+  v_45 = (v_42 & v_44);
+  v_44 = (v_43 = 0);
+  v_43 = (sen when St_PID_calculation(ck))[1];
+  v_42 = (v_41 = 1000);
+  v_41 = (sen when St_PID_calculation(ck))[0];
+  v_40 = (v_39 = 0);
+  v_39 = (sen when St_PID_calculation(ck))[2];
+  v_38 = (v_36 & v_37);
+  v_37 = (avg_ref >= 700);
+  v_36 = not(v_35);
+  v_35 = pre (black_line when St_PID_calculation(ck));
+  v_34 = if v_33 then true else (r when St_PID_calculation(ck));
+  v_33 = true fby false;
+  avg_ref = (v_32 / 5);
+  v_32 = (v_30 + v_31);
+  v_31 = (sen when St_PID_calculation(ck))[4];
+  v_30 = (v_28 + v_29);
+  v_29 = (sen when St_PID_calculation(ck))[3];
+  v_28 = (v_26 + v_27);
+  v_27 = (sen when St_PID_calculation(ck))[2];
+  v_26 = (v_24 + v_25);
+  v_25 = (sen when St_PID_calculation(ck))[1];
+  v_24 = (sen when St_PID_calculation(ck))[0];
+  maxspeed_St_PID_calculation = 60;
+  st_St_PID_calculation = 1;
+  nr_St_PID_calculation = if v_23 then true else false;
+  ns_St_PID_calculation =
+    if v_23 then St_Obstacle_traversing else St_PID_calculation;
+  v_23 = ((object_found when St_PID_calculation(ck)) = 1);
+  dir_St_Obstacle_traversing = 1;
+  v_r_St_Obstacle_traversing =
+    if v_21 then v_22 else (maxspeed when St_Obstacle_traversing(ck));
+  v_22 = ((maxspeed when St_Obstacle_traversing(ck)) / 4);
+  v_21 = ((ir1 when St_Obstacle_traversing(ck)) = 1);
+  v_l_St_Obstacle_traversing =
+    if v_19 then (maxspeed when St_Obstacle_traversing(ck)) else v_20;
+  v_20 = ((maxspeed when St_Obstacle_traversing(ck)) / 4);
+  v_19 = ((ir1 when St_Obstacle_traversing(ck)) = 1);
+  ir_on_St_Obstacle_traversing = 0;
+  object_found_St_Obstacle_traversing = 0;
+  black_line_St_Obstacle_traversing = true;
+  calc_St_Obstacle_traversing = 0;
+  position_St_Obstacle_traversing = 0;
+  pid_St_Obstacle_traversing = 0;
+  sum_St_Obstacle_traversing =
+    (v_18 + (sen4 when St_Obstacle_traversing(ck)));
+  v_18 = (v_17 + (sen3 when St_Obstacle_traversing(ck)));
+  v_17 = (v_16 + (sen2 when St_Obstacle_traversing(ck)));
+  v_16 =
+    ((sen0 when St_Obstacle_traversing(ck)) +
+     (sen1 when St_Obstacle_traversing(ck)));
+  sen4_St_Obstacle_traversing =
+    if (black_line when St_Obstacle_traversing(ck)) then v_14 else v_15;
+  v_15 = (sen when St_Obstacle_traversing(ck))[4];
+  v_14 = (1000 - v_13);
+  v_13 = (sen when St_Obstacle_traversing(ck))[4];
+  sen3_St_Obstacle_traversing =
+    if (black_line when St_Obstacle_traversing(ck)) then v_11 else v_12;
+  v_12 = (sen when St_Obstacle_traversing(ck))[3];
+  v_11 = (1000 - v_10);
+  v_10 = (sen when St_Obstacle_traversing(ck))[3];
+  sen2_St_Obstacle_traversing =
+    if (black_line when St_Obstacle_traversing(ck)) then v_8 else v_9;
+  v_9 = (sen when St_Obstacle_traversing(ck))[2];
+  v_8 = (1000 - v_7);
+  v_7 = (sen when St_Obstacle_traversing(ck))[2];
+  sen1_St_Obstacle_traversing =
+    if (black_line when St_Obstacle_traversing(ck)) then v_5 else v_6;
+  v_6 = (sen when St_Obstacle_traversing(ck))[1];
+  v_5 = (1000 - v_4);
+  v_4 = (sen when St_Obstacle_traversing(ck))[1];
+  sen0_St_Obstacle_traversing =
+    if (black_line when St_Obstacle_traversing(ck)) then v_2 else v_3;
+  v_3 = (sen when St_Obstacle_traversing(ck))[0];
+  v_2 = (1000 - v_1);
+  v_1 = (sen when St_Obstacle_traversing(ck))[0];
+  maxspeed_St_Obstacle_traversing = 60;
+  st_St_Obstacle_traversing = 2;
+  nr_St_Obstacle_traversing = if v then false else false;
+  ns_St_Obstacle_traversing =
+    if v then St_PID_calculation else St_Obstacle_traversing;
+  v = ((sum when St_Obstacle_traversing(ck)) > 1000);
+  v_l =
+    merge ck
+      (St_Obstacle_traversing -> v_l_St_Obstacle_traversing)
+      (St_PID_calculation -> v_l_St_PID_calculation);
+  v_r =
+    merge ck
+      (St_Obstacle_traversing -> v_r_St_Obstacle_traversing)
+      (St_PID_calculation -> v_r_St_PID_calculation);
+  dir =
+    merge ck
+      (St_Obstacle_traversing -> dir_St_Obstacle_traversing)
+      (St_PID_calculation -> dir_St_PID_calculation);
+  pid =
+    merge ck
+      (St_Obstacle_traversing -> pid_St_Obstacle_traversing)
+      (St_PID_calculation -> pid_St_PID_calculation);
+  position =
+    merge ck
+      (St_Obstacle_traversing -> position_St_Obstacle_traversing)
+      (St_PID_calculation -> position_St_PID_calculation);
+  calc =
+    merge ck
+      (St_Obstacle_traversing -> calc_St_Obstacle_traversing)
+      (St_PID_calculation -> calc_St_PID_calculation);
+  sum =
+    merge ck
+      (St_Obstacle_traversing -> sum_St_Obstacle_traversing)
+      (St_PID_calculation -> sum_St_PID_calculation);
+  st =
+    merge ck
+      (St_Obstacle_traversing -> st_St_Obstacle_traversing)
+      (St_PID_calculation -> st_St_PID_calculation);
+  black_line =
+    merge ck
+      (St_Obstacle_traversing -> black_line_St_Obstacle_traversing)
+      (St_PID_calculation -> black_line_St_PID_calculation);
+  maxspeed =
+    merge ck
+      (St_Obstacle_traversing -> maxspeed_St_Obstacle_traversing)
+      (St_PID_calculation -> maxspeed_St_PID_calculation);
+  object_found =
+    merge ck
+      (St_Obstacle_traversing -> object_found_St_Obstacle_traversing)
+      (St_PID_calculation -> object_found_St_PID_calculation);
+  ir_on =
+    merge ck
+      (St_Obstacle_traversing -> ir_on_St_Obstacle_traversing)
+      (St_PID_calculation -> ir_on_St_PID_calculation);
+  sen0 =
+    merge ck
+      (St_Obstacle_traversing -> sen0_St_Obstacle_traversing)
+      (St_PID_calculation -> sen0_St_PID_calculation);
+  sen1 =
+    merge ck
+      (St_Obstacle_traversing -> sen1_St_Obstacle_traversing)
+      (St_PID_calculation -> sen1_St_PID_calculation);
+  sen2 =
+    merge ck
+      (St_Obstacle_traversing -> sen2_St_Obstacle_traversing)
+      (St_PID_calculation -> sen2_St_PID_calculation);
+  sen3 =
+    merge ck
+      (St_Obstacle_traversing -> sen3_St_Obstacle_traversing)
+      (St_PID_calculation -> sen3_St_PID_calculation);
+  sen4 =
+    merge ck
+      (St_Obstacle_traversing -> sen4_St_Obstacle_traversing)
+      (St_PID_calculation -> sen4_St_PID_calculation);
+  ns =
+    merge ck
+      (St_Obstacle_traversing -> ns_St_Obstacle_traversing)
+      (St_PID_calculation -> ns_St_PID_calculation);
+  nr =
+    merge ck
+      (St_Obstacle_traversing -> nr_St_Obstacle_traversing)
+      (St_PID_calculation -> nr_St_PID_calculation)
+tel
+
+node main(sen0 : int; sen1 : int; sen2 : int; sen3 : int; sen4 : int;
+           obj_det : int; ir1 : int; ir2 : int)
+returns (v_l : int; v_r : int; dir : int; pid : int; position : int;
+          calc : int; sum : int; st : int; black_line : bool)
+var sen : int^5;
+let
+  (v_l, v_r, dir, pid, position, calc, sum, st, black_line) =
+    line_follower(sen, obj_det, ir1, ir2);
+  sen = [sen0; sen1; sen2; sen3; sen4]
+tel
+

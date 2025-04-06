@@ -1,0 +1,93 @@
+node line_follower(sen : int^5; obj_det, ir1, ir2: int) returns (v_l, v_r,dir,pid,position,calc, sum, st: int ; black_line : bool)
+var maxspeed, object_found, ir_on, sen0, sen1 , sen2 ,sen3 ,sen4: int;
+let
+     automaton
+          state PID_calculation 
+          var value: int ;
+	     i,d,p,last_pos: int;
+          avg_ref: int;
+          is_line: bool;
+          do
+               st = 1;
+               maxspeed = 60;
+
+               avg_ref = (sen[0] + sen[1] + sen[2] + sen[3] + sen[4])/5 ;
+
+               black_line = false -> (if not pre(black_line) and avg_ref >= 700 and ((sen[2] = 0) or (sen[0] = 1000 and sen[1] = 0 and sen[2] = 1000) or (sen[2] = 1000 and sen[3] = 0 and sen[4] = 1000)) then true else pre(black_line));
+
+               sen0 = if black_line then 1000 - sen[0] else sen[0];
+               sen1 = if black_line then 1000 - sen[1] else sen[1];
+               sen2 = if black_line then 1000 - sen[2] else sen[2];
+               sen3 = if black_line then 1000 - sen[3] else sen[3];
+               sen4 = if black_line then 1000 - sen[4] else sen[4];
+
+               ir_on = ir1;
+               object_found = 0 -> obj_det;
+
+               value = ((0*sen0) + (1000*sen1) + (2000*sen2) + (3000*sen3) + (4000*sen4));
+
+               sum = sen0 + sen1 + sen2 + sen3 + sen4 ;
+
+               is_line = if sen0 > 400 or sen1 > 400 
+                              or sen2 > 400 or sen3 > 400 
+                              or sen4 > 400 then true else false;
+
+               last_pos = 0 -> pre(position);
+
+               position = if is_line then if sum <> 0 then value/sum else 0 
+                              else if last_pos < 0 then 0 else 4000; 
+
+               p = position - 2000 ;
+
+               i = 0 -> if pre(i) > 200000 then 200000 else if pre(i) < -200000 then -200000 else pre(i) + p;
+
+               d = p - (0 -> pre(p));
+
+               calc = p/25 + i/25000 + d*5;
+
+               pid = if calc > maxspeed then maxspeed 
+                         else if calc < -maxspeed then -maxspeed
+                         else calc;
+
+               v_l = if pid < 0 then maxspeed + pid else maxspeed ;
+               v_r = if pid < 0 then maxspeed else maxspeed - pid;
+
+               dir = if sen0 + sen1 + sen2 = 3000 then 2 else if sen2 + sen3 + sen4 = 3000 then 3 else 1;
+
+          until object_found = 1 then Obstacle_traversing
+
+          state Obstacle_traversing do
+               st = 2;
+               maxspeed = 60;
+
+               sen0 = if black_line then 1000 - sen[0] else sen[0];
+               sen1 = if black_line then 1000 - sen[1] else sen[1];
+               sen2 = if black_line then 1000 - sen[2] else sen[2];
+               sen3 = if black_line then 1000 - sen[3] else sen[3];
+               sen4 = if black_line then 1000 - sen[4] else sen[4];
+
+               sum = sen0 + sen1 + sen2 + sen3 + sen4;
+               pid = 0;
+               position = 0;
+               calc = 0;
+               black_line = true;
+               object_found = 0;
+               ir_on = 0;
+
+               v_l = if ir1 = 1 then maxspeed else maxspeed/4;
+               v_r = if ir1 = 1 then maxspeed/4 else maxspeed;
+
+               dir = 1;
+          
+          until sum > 1000 continue PID_calculation
+
+     end
+tel
+
+
+node main(sen0, sen1, sen2, sen3, sen4, obj_det, ir1, ir2: int) returns (v_l, v_r, dir, pid, position, calc, sum, st: int ; black_line: bool)
+var sen: int^5;
+let
+     sen = [sen0, sen1, sen2, sen3, sen4];
+     (v_l, v_r, dir, pid, position, calc, sum, st, black_line) = line_follower(sen, obj_det, ir1, ir2);
+tel
