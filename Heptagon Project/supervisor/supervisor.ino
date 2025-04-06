@@ -14,20 +14,40 @@ void setup()
   pinMode(IR2,INPUT);
   Line_follower__main_reset(&_self);
   Serial.begin(115200);
-  Serial.println("White Line following and Switching!!");  
 }
 
 int obj_det = 0;
-int ir1 = 0, ir2 = 0;
+int ir1 = 0, ir2 = 0, ir_left = 0, ir_right = 0;
 int turnCount = 0;
 void loop()
 {
+
+  char ir_value = ir_read();  // ir_read() returns 'b', 'l', 'r'.
+
+  if (ir_value == 'b') {
+    ir_left = 1;
+    ir_right = 1;
+  } else if (ir_value == 'l') {
+    ir_left = 1;
+    ir_right = 0;
+  } else if (ir_value == 'r') {
+    ir_left = 0;
+    ir_right = 1;
+  } else {
+    ir_left = 0;
+    ir_right = 0;
+  }
+  
   //Serial.println(turnCount);
   Serial.print(digitalRead(IR1));
   Serial.print(" ");
   Serial.print(digitalRead(IR2));
   Serial.print(" ");
   Serial.print(ir_read());
+  Serial.print(" ");
+  Serial.print(ir_left);
+  Serial.print(" ");
+  Serial.print(ir_right);
   Serial.print(" ");
   Serial.print(_res.st);
   Serial.print(" ");
@@ -37,23 +57,23 @@ void loop()
   
   if(digitalRead(IR1) == LOW)
   {
-    ir1 = 1;
+    ir1 = 0;
     beep_on();
   }
   else
   {
-    ir1 = 0;
+    ir1 = 1;
     beep_off();
   }
 
   if(digitalRead(IR2) == LOW)
   {
-    ir2 = 1;
+    ir2 = 0;
     beep_on();
   }
   else
   {
-    ir2 = 0;
+    ir2 = 1;
     beep_off();
   }
   
@@ -68,6 +88,7 @@ void loop()
       sensorValues[i] = 1000;
     }
   } 
+
 
   if(ir_read() == 'b'){
     stop();
@@ -107,7 +128,7 @@ void loop()
   }
   
     
-  Line_follower__main_step(sensorValues[0], sensorValues[1], sensorValues[2], sensorValues[3], sensorValues[4], obj_det, ir1, ir2, &_res, &_self);
+  Line_follower__main_step(sensorValues[0], sensorValues[1], sensorValues[2], sensorValues[3], sensorValues[4], obj_det, ir1, ir2, ir_left, ir_right, &_res, &_self);
   
   if(_res.black_line and _res.sum >= 3000){
     switch(turnCount){

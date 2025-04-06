@@ -1,4 +1,4 @@
-node line_follower(sen : int^5; obj_det, ir1, ir2: int) returns (v_l, v_r,dir,pid,position,calc, sum, st: int ; black_line : bool)
+node line_follower(sen : int^5; obj_det, ir1, ir2, ir_left, ir_right: int) returns (v_l, v_r,dir,pid,position,calc, sum, st: int ; black_line : bool)
 var maxspeed, object_found, ir_on, sen0, sen1 , sen2 ,sen3 ,sen4: int;
 let
      automaton
@@ -85,9 +85,9 @@ let
 tel
 
 
-node main(sen0, sen1, sen2, sen3, sen4, obj_det, ir1, ir2: int) returns (v_l, v_r, dir, pid, position, calc, sum, st: int ; black_line: bool)
+node main(sen0, sen1, sen2, sen3, sen4, obj_det, ir1, ir2, ir_left, ir_right: int) returns (v_l, v_r, dir, pid, position, calc, sum, st: int ; black_line: bool)
 var sen: int^5;
 let
      sen = [sen0, sen1, sen2, sen3, sen4];
-     (v_l, v_r, dir, pid, position, calc, sum, st, black_line) = line_follower(sen, obj_det, ir1, ir2);
+     (v_l, v_r, dir, pid, position, calc, sum, st, black_line) = line_follower(sen, obj_det, ir1, ir2, ir_left, ir_right);
 tel

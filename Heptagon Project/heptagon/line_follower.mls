@@ -1,5 +1,6 @@
 type st = St_PID_calculation|St_Obstacle_traversing
-node line_follower(sen : int^5; obj_det : int; ir1 : int; ir2 : int)
+node line_follower(sen : int^5; obj_det : int; ir1 : int; ir2 : int;
+                    ir_left : int; ir_right : int)
 returns (v_l : int; v_r : int; dir : int; pid : int; position : int;
           calc : int; sum : int; st : int; black_line : bool)
 var sen4 : int; sen3 : int; sen2 : int; sen1 : int; sen0 : int; ir_on : int;
@@ -353,13 +354,14 @@ let
 tel
 
 node main(sen0 : int; sen1 : int; sen2 : int; sen3 : int; sen4 : int;
-           obj_det : int; ir1 : int; ir2 : int)
+           obj_det : int; ir1 : int; ir2 : int; ir_left : int;
+           ir_right : int)
 returns (v_l : int; v_r : int; dir : int; pid : int; position : int;
           calc : int; sum : int; st : int; black_line : bool)
 var sen : int^5;
 let
   (v_l, v_r, dir, pid, position, calc, sum, st, black_line) =
-    line_follower(sen, obj_det, ir1, ir2);
+    line_follower(sen, obj_det, ir1, ir2, ir_left, ir_right);
   sen = [sen0; sen1; sen2; sen3; sen4]
 tel
 

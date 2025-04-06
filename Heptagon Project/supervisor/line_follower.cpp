@@ -1,4 +1,4 @@
-/* --- Generated the 6/4/2025 at 15:0 --- */
+/* --- Generated the 6/4/2025 at 16:8 --- */
 /* --- heptagon compiler, version 1.05.00 (compiled sun. mar. 9 13:49:38 CET 2025) --- */
 /* --- Command line: /usr/local/bin/heptc -target c -s main -hepts line_follower.ept --- */
 
@@ -18,7 +18,7 @@ void Line_follower__line_follower_reset(Line_follower__line_follower_mem* self) 
 }
 
 void Line_follower__line_follower_step(long sen[5], long obj_det, long ir1,
-                                       long ir2,
+                                       long ir2, long ir_left, long ir_right,
                                        Line_follower__line_follower_out* _out,
                                        Line_follower__line_follower_mem* self) {
   
@@ -578,6 +578,7 @@ void Line_follower__main_reset(Line_follower__main_mem* self) {
 
 void Line_follower__main_step(long sen0, long sen1, long sen2, long sen3,
                               long sen4, long obj_det, long ir1, long ir2,
+                              long ir_left, long ir_right,
                               Line_follower__main_out* _out,
                               Line_follower__main_mem* self) {
   Line_follower__line_follower_out Line_follower__line_follower_out_st;
@@ -588,7 +589,8 @@ void Line_follower__main_step(long sen0, long sen1, long sen2, long sen3,
   sen[2] = sen2;
   sen[3] = sen3;
   sen[4] = sen4;
-  Line_follower__line_follower_step(sen, obj_det, ir1, ir2,
+  Line_follower__line_follower_step(sen, obj_det, ir1, ir2, ir_left,
+                                    ir_right,
                                     &Line_follower__line_follower_out_st,
                                     &self->line_follower);
   _out->v_l = Line_follower__line_follower_out_st.v_l;
