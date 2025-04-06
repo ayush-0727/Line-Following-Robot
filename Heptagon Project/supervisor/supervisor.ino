@@ -51,6 +51,8 @@ void loop()
   Serial.print(" ");
   Serial.print(_res.st);
   Serial.print(" ");
+  Serial.print(_res.sum);
+  Serial.print(" ");
   Serial.print(_res.v_l);  
   Serial.print(" ");
   Serial.println(_res.v_r);  
@@ -96,29 +98,29 @@ void loop()
     beep_on();
     delay(60);
 
-    backward(); // backward
-    SetSpeed(60,60);
+//    backward(); // backward
+//    SetSpeed(30,30);
     beep_off();
     delay(400);
     
-    forward(); // first right
-    right();
-    SetSpeed(0,60);
-    beep_off();
-    delay(500);
-
-    stop();
-    SetSpeed(0,0);
-    delay(600);
-       
-    forward();
-    SetSpeed(60,60);
-    beep_off();
-    delay(600);
-    
-    stop();
-    SetSpeed(0,0);
-    delay(400);
+//    forward(); // first right
+//    right();
+//    SetSpeed(0,60);
+//    beep_off();
+//    delay(500);
+//
+//    stop();
+//    SetSpeed(0,0);
+//    delay(600);
+//       
+//    forward();
+//    SetSpeed(60,60);
+//    beep_off();
+//    delay(600);
+//    
+//    stop();
+//    SetSpeed(0,0);
+//    delay(400);
 
     obj_det = 1;
   }

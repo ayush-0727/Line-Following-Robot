@@ -1,4 +1,4 @@
-/* --- Generated the 6/4/2025 at 16:8 --- */
+/* --- Generated the 7/4/2025 at 2:32 --- */
 /* --- heptagon compiler, version 1.05.00 (compiled sun. mar. 9 13:49:38 CET 2025) --- */
 /* --- Command line: /usr/local/bin/heptc -target c -s main -hepts line_follower.ept --- */
 
@@ -7,18 +7,20 @@
 
 #include "line_follower_types.h"
 typedef struct Line_follower__line_follower_mem {
+  long v_25;
+  long v_19;
+  long v_132;
+  long v_130;
+  long v_126;
+  long v_124;
+  long v_122;
   long v_120;
-  long v_118;
-  long v_114;
-  long v_112;
-  long v_110;
-  long v_108;
-  long v_101;
-  long v_99;
-  long v_77;
-  long v_60;
-  long v_35;
-  long v_33;
+  long v_113;
+  long v_111;
+  long v_85;
+  long v_68;
+  long v_43;
+  long v_41;
   Line_follower__st ck;
   long pnr;
 } Line_follower__line_follower_mem;

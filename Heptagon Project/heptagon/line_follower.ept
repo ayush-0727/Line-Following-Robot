@@ -22,7 +22,7 @@ let
                sen4 = if black_line then 1000 - sen[4] else sen[4];
 
                ir_on = ir1;
-               object_found = 0 -> obj_det;
+               object_found = 0 -> if ((ir_left = 1) or (ir_right = 1)) then 1 else 0;
 
                value = ((0*sen0) + (1000*sen1) + (2000*sen2) + (3000*sen3) + (4000*sen4));
 
@@ -74,8 +74,8 @@ let
                object_found = 0;
                ir_on = 0;
 
-               v_l = if ir1 = 1 then maxspeed else maxspeed/4;
-               v_r = if ir1 = 1 then maxspeed/4 else maxspeed;
+               v_l = maxspeed -> (if (ir1 = 0 or ir_left = 1) then maxspeed else 0);
+               v_r = 0 -> (if (ir1 = 0 or ir_left = 1) then 0 else maxspeed);
 
                dir = 1;
           
